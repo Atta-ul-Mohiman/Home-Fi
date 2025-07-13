@@ -1,4 +1,4 @@
-package com.geekflow.home_fi
+package com.geekflow.NexaHome
 
 import io.flutter.embedding.android.FlutterActivity
 

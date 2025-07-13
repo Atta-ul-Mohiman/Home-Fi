@@ -1,9 +1,10 @@
+import 'package:NexaHome/app/modules/home/controllers/home_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:home_fi/app/global_widgets/animated_switch.dart';
-import 'package:home_fi/app/modules/home/controllers/home_controller.dart';
-import 'package:home_fi/app/theme/text_theme.dart';
+import 'package:NexaHome/app/global_widgets/animated_switch.dart';
+import 'package:NexaHome/app/modules/home/controllers/home_controller.dart';
+import 'package:NexaHome/app/theme/text_theme.dart';
 
 import '../theme/color_theme.dart';
 

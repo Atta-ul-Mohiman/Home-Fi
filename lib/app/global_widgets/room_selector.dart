@@ -1,7 +1,7 @@
+import 'package:NexaHome/app/theme/text_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:home_fi/app/theme/text_theme.dart';
 
 class RoomSelector extends StatelessWidget {
   final String roomName;

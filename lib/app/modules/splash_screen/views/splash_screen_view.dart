@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:home_fi/app/theme/text_theme.dart';
+import 'package:NexaHome/app/theme/text_theme.dart';
 import 'package:lottie/lottie.dart';
 
 import '../controllers/splash_screen_controller.dart';
@@ -30,7 +30,7 @@ class SplashScreenView extends GetView<SplashScreenController> {
                 height: 80.0,
               ),
               Text(
-                'Home-Fi',
+                'NexaHome',
                 style: HomeFiTextTheme.kHeadTextStyle.copyWith(
                   color: Theme.of(context).primaryColor,
                 ),
