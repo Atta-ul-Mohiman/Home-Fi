@@ -1,3 +1,4 @@
+import 'package:NexaHome/View/Admin/adminScreen.dart';
 import 'package:NexaHome/app/modules/home/views/home_view.dart';
 import 'package:NexaHome/controller/userDataController.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -28,21 +29,29 @@ class LoginController extends GetxController {
       );
 
       String uid = userCredential.user!.uid;
-
-        DocumentSnapshot userDoc =
-      await _firestore.collection('users').doc(uid).get();
-
-      if (userDoc.exists) {
-       await  userDataController.getUserData();
-       Get.offAll(()=>HomeView());
-       loggingUser.value = false;
+      if(email.toLowerCase()=='nexaadmin@gmail.com'){
+        Get.offAll(AllUsersPage());
         Get.snackbar("Success", "Logged in successfully!",
             backgroundColor: Color(0xFF4A148C), colorText: Colors.white);
-      } else {
-        loggingUser.value = false;
-        Get.snackbar("Error", "User data not found!",
-            backgroundColor:Color(0xFF4A148C), colorText: Colors.white);
       }
+      else{
+        DocumentSnapshot userDoc =
+        await _firestore.collection('users').doc(uid).get();
+
+        if (userDoc.exists) {
+          await  userDataController.getUserData();
+          Get.offAll(()=>HomeView());
+          loggingUser.value = false;
+          Get.snackbar("Success", "Logged in successfully!",
+              backgroundColor: Color(0xFF4A148C), colorText: Colors.white);
+        } else {
+          loggingUser.value = false;
+          Get.snackbar("Error", "User  not found!",
+              backgroundColor:Color(0xFF4A148C), colorText: Colors.white);
+        }
+      }
+
+
     } on FirebaseAuthException catch (e) {
       loggingUser.value = false;
       Get.snackbar("Login Failed", e.message ?? "An error occurred",

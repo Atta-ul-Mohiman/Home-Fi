@@ -27,6 +27,8 @@ dependencies:
   firebase_core:
   image_picker:
   path_provider:
+  cloud_functions:
+  intl:
 
 dev_dependencies:
   flutter_test:
