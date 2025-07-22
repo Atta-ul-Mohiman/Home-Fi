@@ -22,6 +22,11 @@ dependencies:
   http:
   lottie:
   mqtt_client:
+  firebase_auth:
+  cloud_firestore:
+  firebase_core:
+  image_picker:
+  path_provider:
 
 dev_dependencies:
   flutter_test:

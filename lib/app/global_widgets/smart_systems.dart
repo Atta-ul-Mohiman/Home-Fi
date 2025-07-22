@@ -29,6 +29,8 @@ class SmartSystem extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
+      splashColor: Colors.transparent,
+      highlightColor: Colors.transparent,
       child: Container(
         height: Get.width * 0.414,
         width: Get.width * 0.4,

@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:NexaHome/controller/userDataController.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -9,6 +12,7 @@ import 'package:NexaHome/app/modules/home/controllers/home_controller.dart';
 import 'package:NexaHome/app/modules/home/views/rgb_view.dart';
 import 'package:NexaHome/app/theme/color_theme.dart';
 import 'package:NexaHome/app/theme/text_theme.dart';
+import 'package:get_storage/get_storage.dart';
 
 class DashboardView extends GetView<HomeController> {
   @override
@@ -25,25 +29,35 @@ class DashboardView extends GetView<HomeController> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           SizedBox(height: size.height * 0.08),
-          GetBuilder<HomeController>(
+          GetBuilder<UserDataController>(
             id: 7,
-            builder: (_) {
+            builder: (userController) {
               return Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text(
-                    'Welcome\nHome, ${controller.userName}',
-                    style: HomeFiTextTheme.kSubHeadTextStyle
-                        .copyWith(color: Theme.of(context).primaryColorDark),
-                  ),
-                  GestureDetector(
-                    // onTap: () => Get.to(() => ProfileView()),
-                    child: UserAvatar(
-                      ismale: controller.isMale,
-                      radius: size.width * 0.075,
+                  Container(
+                    width:220,
+                    color: Colors.transparent,
+                    child: Text(
+                      'Welcome\nHome, ${userController.username.value}',
+                      overflow: TextOverflow.ellipsis,
+                      style: HomeFiTextTheme.kSubHeadTextStyle
+                          .copyWith(color: Theme.of(context).primaryColorDark),
                     ),
                   ),
+                  Obx(
+                  ()=> CircleAvatar(
+                      radius: 30,
+                      backgroundImage:userController.profilePic.value.isEmpty?
+                          null
+                          :FileImage(File(userController.profilePic.value)),
+                      backgroundColor: Color(0xFF4A148C),
+                    child: userController.profilePic.value.isEmpty?
+                        Icon(Icons.person,size: 35,)
+                        :null,
+                    ),
+                  )
                 ],
               );
             },
@@ -96,98 +110,98 @@ class DashboardView extends GetView<HomeController> {
                       },
                     ),
                     SizedBox(height: size.height * 0.03),
-                    Container(
-                      width: Get.width,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          StreamBuilder<AdafruitGET>(
-                            stream: controller.tempStream.stream,
-                            builder: (context, snapshot) {
-                              if (!snapshot.hasData ||
-                                  snapshot.connectionState ==
-                                      ConnectionState.waiting) {
-                                return TempHumidBanner(
-                                  img: 'assets/icons/temperature.png',
-                                  title: 'Temperature',
-                                  horizontalPadding: Get.width * 0.046,
-                                  child: SizedBox(
-                                    child: CircularProgressIndicator(
-                                      strokeWidth: 2,
-                                    ),
-                                    height: 15,
-                                    width: 15,
-                                  ),
-                                );
-                              } else {
-                                var value;
-                                snapshot.data!.lastValue == 'nan'
-                                    ? value = 0
-                                    : value =
-                                        double.parse(snapshot.data!.lastValue!)
-                                            .toInt();
-                                return TempHumidBanner(
-                                  img: 'assets/icons/temperature.png',
-                                  title: 'Temperature',
-                                  horizontalPadding: Get.width * 0.046,
-                                  child: Text(
-                                    '$value°C',
-                                    style: HomeFiTextTheme.kSub2HeadTextStyle
-                                        .copyWith(
-                                      color: Theme.of(context).primaryColorDark,
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                                  ),
-                                );
-                              }
-                            },
-                          ),
-                          StreamBuilder<AdafruitGET>(
-                            stream: controller.humidStream.stream,
-                            builder: (context, snapshot) {
-                              if (!snapshot.hasData ||
-                                  snapshot.connectionState ==
-                                      ConnectionState.waiting) {
-                                return TempHumidBanner(
-                                  img: 'assets/icons/humidity.png',
-                                  title: 'Humidity',
-                                  horizontalPadding: Get.width * 0.044,
-                                  child: SizedBox(
-                                    child: CircularProgressIndicator(
-                                      strokeWidth: 2,
-                                    ),
-                                    height: 15,
-                                    width: 15,
-                                  ),
-                                );
-                              } else {
-                                var value;
-                                snapshot.data!.lastValue == 'nan'
-                                    ? value = 0
-                                    : value =
-                                        double.parse(snapshot.data!.lastValue!)
-                                            .toInt();
-                                return TempHumidBanner(
-                                  img: 'assets/icons/humidity.png',
-                                  title: 'Humidity',
-                                  horizontalPadding: Get.width * 0.044,
-                                  child: Text(
-                                    '$value%',
-                                    style: HomeFiTextTheme.kSub2HeadTextStyle
-                                        .copyWith(
-                                      color: Theme.of(context).primaryColorDark,
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                                  ),
-                                );
-                              }
-                            },
-                          ),
-                        ],
-                      ),
-                    ),
+                    // Container(
+                    //   width: Get.width,
+                    //   child: Row(
+                    //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //     children: [
+                    //       StreamBuilder<AdafruitGET>(
+                    //         stream: controller.tempStream.stream,
+                    //         builder: (context, snapshot) {
+                    //           if (!snapshot.hasData ||
+                    //               snapshot.connectionState ==
+                    //                   ConnectionState.waiting) {
+                    //             return TempHumidBanner(
+                    //               img: 'assets/icons/temperature.png',
+                    //               title: 'Temperature',
+                    //               horizontalPadding: Get.width * 0.046,
+                    //               child: SizedBox(
+                    //                 child: CircularProgressIndicator(
+                    //                   strokeWidth: 2,
+                    //                 ),
+                    //                 height: 15,
+                    //                 width: 15,
+                    //               ),
+                    //             );
+                    //           } else {
+                    //             var value;
+                    //             snapshot.data!.lastValue == 'nan'
+                    //                 ? value = 0
+                    //                 : value =
+                    //                     double.parse(snapshot.data!.lastValue!)
+                    //                         .toInt();
+                    //             return TempHumidBanner(
+                    //               img: 'assets/icons/temperature.png',
+                    //               title: 'Temperature',
+                    //               horizontalPadding: Get.width * 0.046,
+                    //               child: Text(
+                    //                 '$value°C',
+                    //                 style: HomeFiTextTheme.kSub2HeadTextStyle
+                    //                     .copyWith(
+                    //                   color: Theme.of(context).primaryColorDark,
+                    //                   fontSize: 18,
+                    //                   fontWeight: FontWeight.w700,
+                    //                 ),
+                    //               ),
+                    //             );
+                    //           }
+                    //         },
+                    //       ),
+                    //       StreamBuilder<AdafruitGET>(
+                    //         stream: controller.humidStream.stream,
+                    //         builder: (context, snapshot) {
+                    //           if (!snapshot.hasData ||
+                    //               snapshot.connectionState ==
+                    //                   ConnectionState.waiting) {
+                    //             return TempHumidBanner(
+                    //               img: 'assets/icons/humidity.png',
+                    //               title: 'Humidity',
+                    //               horizontalPadding: Get.width * 0.044,
+                    //               child: SizedBox(
+                    //                 child: CircularProgressIndicator(
+                    //                   strokeWidth: 2,
+                    //                 ),
+                    //                 height: 15,
+                    //                 width: 15,
+                    //               ),
+                    //             );
+                    //           } else {
+                    //             var value;
+                    //             snapshot.data!.lastValue == 'nan'
+                    //                 ? value = 0
+                    //                 : value =
+                    //                     double.parse(snapshot.data!.lastValue!)
+                    //                         .toInt();
+                    //             return TempHumidBanner(
+                    //               img: 'assets/icons/humidity.png',
+                    //               title: 'Humidity',
+                    //               horizontalPadding: Get.width * 0.044,
+                    //               child: Text(
+                    //                 '$value%',
+                    //                 style: HomeFiTextTheme.kSub2HeadTextStyle
+                    //                     .copyWith(
+                    //                   color: Theme.of(context).primaryColorDark,
+                    //                   fontSize: 18,
+                    //                   fontWeight: FontWeight.w700,
+                    //                 ),
+                    //               ),
+                    //             );
+                    //           }
+                    //         },
+                    //       ),
+                    //     ],
+                    //   ),
+                    // ),
                     SizedBox(height: size.height * 0.03),
                     Text(
                       'Smart Systems',
@@ -217,7 +231,7 @@ class DashboardView extends GetView<HomeController> {
                                   imageUrl:
                                       'assets/images/icons8-rgb-lamp-96.png',
                                   onTap: () {
-                                    Get.to(() => RGBview());
+                                    // Get.to(() => RGBview());
                                   },
                                 ),
                               ],

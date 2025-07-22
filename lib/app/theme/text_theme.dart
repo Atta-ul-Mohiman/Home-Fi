@@ -11,7 +11,7 @@ static var kHeadTextStyle = GoogleFonts.lato(
 );
 static var kSubHeadTextStyle = GoogleFonts.dmSans(
   textStyle: TextStyle(
-    fontSize: 26,
+    fontSize: 21,
     fontWeight: FontWeight.w600,
     height: 1.2,
   ),

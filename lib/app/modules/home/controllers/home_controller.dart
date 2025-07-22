@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:NexaHome/View/Devices/allDevices.dart';
+import 'package:NexaHome/View/Settings/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:NexaHome/app/data/models/adafruit_get.dart';
@@ -24,8 +26,8 @@ class HomeController extends GetxController {
   // the list of screens switched by bottom navBar
   final List<Widget> homeViews = [
     DashboardView(),
-    ConnectedDeviceView(),
-    SettingsView(),
+    AllDevicesScreen(),
+    SettingsScreen(),
   ];
 
   // List of room data
@@ -37,11 +39,9 @@ class HomeController extends GetxController {
     Room(roomName: 'Bathroom', roomImgUrl: 'assets/icons/bathtub.svg'),
   ];
 
-  List<bool> isToggled = [false, false, false, false];
+  List<bool> isToggled = [false, false, false, false].obs;
 
-  // AdafruitGET & AdafruitGET from sensor;
-  late StreamController<AdafruitGET> tempStream;
-  late StreamController<AdafruitGET> humidStream;
+
 
   // store current color from adafruit IO
   RxString currentRGB = "0xffffff".obs;
@@ -51,10 +51,9 @@ class HomeController extends GetxController {
   setCurrentIndex(int index) {
     _currentIndex.value = index;
     if (index == 1 || index == 2) {
-      tempStream.close();
-      humidStream.close();
+
     } else if (index == 0) {
-      streamInit();
+      // streamInit();
     }
   }
 
@@ -88,11 +87,9 @@ class HomeController extends GetxController {
   retreveSensorData() async {
     // AdafruitGET temperature data fetch
     AdafruitGET temper = await TempHumidAPI.getTempData();
-    tempStream.add(temper);
 
     // AdafruitGET humidity data fetch
     AdafruitGET humid = await TempHumidAPI.getHumidData();
-    humidStream.add(humid);
   }
 
   getSmartSystemStatus() async {
@@ -117,21 +114,21 @@ class HomeController extends GetxController {
     TempHumidAPI.updateRGBdata(hex);
   }
 
-  streamInit() {
-    tempStream = StreamController();
-    humidStream = StreamController();
-    Timer.periodic(
-      Duration(seconds: 3),
-      (_) {
-        getSmartSystemStatus();
-        retreveSensorData();
-      },
-    );
-  }
+  // streamInit() {
+  //   tempStream = StreamController();
+  //   humidStream = StreamController();
+  //   Timer.periodic(
+  //     Duration(seconds: 3),
+  //     (_) {
+  //       getSmartSystemStatus();
+  //       retreveSensorData();
+  //     },
+  //   );
+  // }
 
   @override
   void onInit() {
-    streamInit();
+    // streamInit();
     newRGB = currentRGB;
     super.onInit();
   }
@@ -144,7 +141,5 @@ class HomeController extends GetxController {
   @override
   void onClose() {
     super.onClose();
-    tempStream.close();
-    humidStream.close();
   }
 }

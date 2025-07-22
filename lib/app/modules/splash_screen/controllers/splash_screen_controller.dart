@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:NexaHome/View/authScreens/loginScreen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:NexaHome/app/modules/home/views/home_view.dart';
@@ -23,7 +25,15 @@ class SplashScreenController extends GetxController
         // checkLogin();
         Timer(
           Duration(milliseconds: 1000),
-          () => Get.off(() => HomeView()),
+          () {
+            if(FirebaseAuth.instance.currentUser?.uid!=null){
+              Get.offAll(() => HomeView());
+            }
+            else{
+              Get.offAll(LoginScreen());
+            }
+
+          }
         );
       }
     });
