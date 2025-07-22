@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -11,6 +12,10 @@ class AddDeviceScreen extends StatelessWidget {
     'LED',
     'Music Player',
     'RGB LED',
+    'TV',
+    'AC',
+    'Camera',
+    'Refrigerator'
   ];
 
   final Color purple = const Color(0xFF6A1B9A);
@@ -105,7 +110,9 @@ class AddDeviceScreen extends StatelessWidget {
                           backgroundColor: Color(0xFF4A148C), colorText: Colors.white);
                       return;
                     }
-                    await FirebaseFirestore.instance.collection('Devices').add({
+                    FirebaseFirestore.instance
+                        .collection('users').doc(FirebaseAuth.instance.currentUser?.uid).
+                    collection('Devices').add({
                       'deviceType':type,
                       'deviceName':name
                       ,'isOn':false,

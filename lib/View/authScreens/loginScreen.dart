@@ -25,11 +25,7 @@ FocusNode passwordNode = FocusNode();
             padding: EdgeInsets.symmetric(horizontal: 15),
             child: Column(
               children: [
-                Lottie.asset(
-                  'assets/lottie/light-bulb.json',
-                  repeat: false,
-                  width: Get.width * 0.75,
-                ),
+                Image.asset('assets/images/logo.jpeg',height:250,width:250),
                 SizedBox(height: 0),
                 Text(
                   "Welcome Back",

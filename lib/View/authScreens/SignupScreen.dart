@@ -22,11 +22,8 @@ class SignupScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Center(
-                child: Lottie.asset(
-                  'assets/lottie/light-bulb.json',
-                  repeat: false,
-                  width: 150,
-                ),
+                child:                Image.asset('assets/images/logo.jpeg',height:200,width:200),
+
               ),
               Center(
                 child: Text("Create Account",

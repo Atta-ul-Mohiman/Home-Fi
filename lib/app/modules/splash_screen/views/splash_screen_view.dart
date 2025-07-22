@@ -16,25 +16,11 @@ class SplashScreenView extends GetView<SplashScreenController> {
           return Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Lottie.asset(
-                'assets/lottie/light-bulb.json',
-                controller: _.animationController,
-                frameRate: FrameRate(60),
-                repeat: true,
-                width: Get.width * 0.75,
-                onLoaded: (composition) {
-                  _.animationController..duration = composition.duration;
-                },
-              ),
+            Image.asset('assets/images/logo.jpeg'),
               SizedBox(
                 height: 80.0,
               ),
-              Text(
-                'NexaHome',
-                style: HomeFiTextTheme.kHeadTextStyle.copyWith(
-                  color: Theme.of(context).primaryColor,
-                ),
-              ),
+
             ],
           );
         }),

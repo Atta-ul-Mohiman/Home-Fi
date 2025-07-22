@@ -5,6 +5,7 @@ import 'package:NexaHome/app/global_widgets/smart_systems.dart';
 import 'package:NexaHome/app/theme/color_theme.dart';
 import 'package:NexaHome/app/theme/text_theme.dart';
 import 'package:NexaHome/controller/DeviceController.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
@@ -28,7 +29,9 @@ class AllDevicesScreen extends StatelessWidget {
         backgroundColor: purple,
       ),
       body: StreamBuilder<QuerySnapshot>(
-        stream: _firestore.collection('Devices').snapshots(),
+        stream:FirebaseFirestore.instance
+            .collection('users').doc(FirebaseAuth.instance.currentUser?.uid).
+        collection('Devices').snapshots(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator(color: Colors.purple,));
@@ -60,6 +63,7 @@ class AllDevicesScreen extends StatelessWidget {
               ),
             );
           }
+
 
           return GridView.builder(
             padding: const EdgeInsets.all(16),
@@ -155,7 +159,15 @@ class AllDevicesScreen extends StatelessWidget {
                                       ? AssetImage('assets/images/icons8-light-96.png')
                                       : type == 'Music Player'
                                       ? AssetImage('assets/images/icons8-music-record-96.png')
-                                      : AssetImage('assets/images/icons8-rgb-lamp-96.png'),
+                                      : type =='TV'?
+                                  AssetImage('assets/images/tv.png')
+                                      :type =='AC'?
+                                  AssetImage('assets/images/ac.png')
+                                      :type =='Camera'?
+                                  AssetImage('assets/images/cam.png')
+                                      :type =='Refrigerator'?
+                                  AssetImage('assets/images/ref.png')
+                                      :AssetImage('assets/images/icons8-rgb-lamp-96.png'),
                                   fit: BoxFit.fill,
                                   height: Get.width * 0.16,
                                 ),
@@ -170,7 +182,8 @@ class AllDevicesScreen extends StatelessWidget {
                                     onTap: () {
                                       controller.toggleDevice(docId);
                                       FirebaseFirestore.instance
-                                          .collection('Devices')
+                                          .collection('users').doc(FirebaseAuth.instance.currentUser?.uid).
+                                      collection('Devices')
                                           .doc(docId)
                                           .update({'isOn': controller.toggleStates[docId]!.value});
                                     },
@@ -180,10 +193,16 @@ class AllDevicesScreen extends StatelessWidget {
                               Positioned(
                                 bottom: 25,
                                 left: 18,
-                                child: Text(
-                                  name,
-                                  style: HomeFiTextTheme.kSub2HeadTextStyle.copyWith(
-                                    color: GFTheme.primaryMaroon,
+                                child: Container(
+                                  width: 120,
+                                  child: Text(
+                                    name,
+                                    overflow: TextOverflow.ellipsis,
+                                    style:GoogleFonts.nunito(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w700,
+                                      color: Colors.black
+                                    ),
                                   ),
                                 ),
                               ),
